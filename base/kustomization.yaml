@@ -11,6 +11,7 @@ resources:
   - metabase-db-service.yaml
   - metabase-deployment.yaml
   - metabase-service.yaml
+  - ingress.yaml
 
 commonLabels:
   app.kubernetes.io/part-of: metabase
