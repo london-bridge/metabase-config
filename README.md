@@ -16,15 +16,13 @@ base/
 └── kustomization.yaml
 ```
 
-## URL de acesso (Staging)
+## URL de acesso (Dev)
 
-Após aplicar os manifests e configurar o DNS, o Metabase fica disponível em:
-
-**https://metabase.stg.lbpay.com.br**
+**https://metabase.dev.lbpay.com.br**
 
 A variável `MB_SITE_URL` está configurada no deployment para redirects e cookies funcionarem corretamente.
 
-**Configuração DNS:** Crie um registro CNAME `metabase.stg.lbpay.com.br` apontando para o hostname do ALB criado pelo Ingress (obtido com `kubectl get ingress -n analytics`).
+O Ingress compartilha o ALB com portal-backoffice (`group.name: portal-backoffice-qa-alb-group`). O DNS `metabase.dev.lbpay.com.br` aponta para o mesmo ALB na zona Route53 `dev.lbpay.com.br` (conta dev).
 
 ## Instalação
 
