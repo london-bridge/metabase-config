@@ -22,7 +22,7 @@ base/
 
 A variável `MB_SITE_URL` está configurada no deployment para redirects e cookies funcionarem corretamente.
 
-O Ingress compartilha o ALB com portal-backoffice (`group.name: portal-backoffice-qa-alb-group`). O DNS `metabase.dev.lbpay.com.br` aponta para o mesmo ALB na zona Route53 `dev.lbpay.com.br` (conta dev).
+O Ingress usa ALB próprio com subnets da VPC dev. O DNS `metabase.dev.lbpay.com.br` está na zona privada Route53 `dev.lbpay.com.br` (conta dev) — requer VPN para resolução.
 
 ## Instalação
 
