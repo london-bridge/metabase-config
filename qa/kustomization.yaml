@@ -2,8 +2,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Garante que todos os recursos sejam criados no namespace analytics
 namespace: analytics
 
+# Ordem: namespace primeiro, depois o resto (namespace deve existir antes dos demais)
 resources:
   - namespace.yaml
   - pvc.yaml

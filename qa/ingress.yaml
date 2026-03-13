@@ -12,12 +12,12 @@ metadata:
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/success-codes: "200"
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/subnets: subnet-0e55aedb0b2c84a38,subnet-0e9fae210b2e0139b,subnet-0ebc178dbce5f7d41
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:333449929724:certificate/2c82cebe-42b6-47e2-acb8-2c5552580390
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/subnets: subnet-0f07f74d367977def,subnet-0721286f3422f0e43
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:826838947101:certificate/7a7e1b08-ddc2-4fe4-9af5-7da1e4ca7086
 spec:
   ingressClassName: alb
   rules:
