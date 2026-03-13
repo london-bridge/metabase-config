@@ -1,0 +1,75 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metabase
+  labels:
+    app: metabase
+    app.kubernetes.io/name: metabase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metabase
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: metabase
+        app.kubernetes.io/name: metabase
+    spec:
+      initContainers:
+        - name: wait-for-db
+          image: postgres:15
+          command: ['sh', '-c', 'until pg_isready -h metabase-db -p 5432; do echo waiting for db; sleep 2; done']
+      containers:
+        - name: metabase
+          image: metabase/metabase:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: MB_DB_TYPE
+              value: postgres
+            - name: MB_DB_DBNAME
+              value: metabase
+            - name: MB_DB_PORT
+              value: "5432"
+            - name: MB_DB_USER
+              value: metabase
+            - name: MB_DB_PASS
+              value: metabase123
+            - name: MB_DB_HOST
+              value: metabase-db
+            - name: MB_JETTY_HOST
+              value: "0.0.0.0"
+            - name: MB_JETTY_PORT
+              value: "3000"
+            - name: MB_SITE_URL
+              value: "https://metabase.qa.lbpay.com.br"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi

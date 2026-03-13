@@ -1,0 +1,33 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metabase
+  labels:
+    app: metabase
+    app.kubernetes.io/name: metabase
+  annotations:
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-path: /api/health
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/subnets: subnet-0e55aedb0b2c84a38,subnet-0e9fae210b2e0139b,subnet-0ebc178dbce5f7d41
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:333449929724:certificate/2c82cebe-42b6-47e2-acb8-2c5552580390
+spec:
+  ingressClassName: alb
+  rules:
+    - host: metabase.qa.lbpay.com.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: metabase
+                port:
+                  number: 80

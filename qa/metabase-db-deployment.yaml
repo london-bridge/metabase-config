@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metabase-db
+  labels:
+    app: metabase-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metabase-db
+  template:
+    metadata:
+      labels:
+        app: metabase-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: POSTGRES_DB
+              value: metabase
+            - name: POSTGRES_USER
+              value: metabase
+            - name: POSTGRES_PASSWORD
+              value: metabase123
+          volumeMounts:
+            - name: metabase-db-data
+              mountPath: /var/lib/postgresql/data
+              subPath: pgdata
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: metabase-db-data
+          persistentVolumeClaim:
+            claimName: metabase-db
